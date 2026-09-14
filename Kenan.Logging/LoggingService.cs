@@ -7,7 +7,6 @@ namespace Kenan.Logging
     public class LoggingService
     {
         /*
-         * V1.0
          * First version of log system.
          * Will be updated in the future with more features and better design.
          */
@@ -25,7 +24,13 @@ namespace Kenan.Logging
 
         static ConsoleColor WarnColor = ConsoleColor.Red;
         static ConsoleColor DefaultColor = ConsoleColor.Gray;
-        public static void Log(string Message)
+        public enum LogLevel
+        {
+            Info,
+            Warning,
+            Error
+        }
+        public static void Log(string Message, LogLevel Level = LogLevel.Info)
         {
             IntPtr consoleHandle = GetConsoleWindow();
             if (consoleHandle != IntPtr.Zero)
@@ -39,7 +44,25 @@ namespace Kenan.Logging
             var CallerFrame = stackTrace.GetFrame(1);
             var Method = CallerFrame?.GetMethod();
 
-            var Header = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] Log Entry: ";
+            string problem;
+
+            switch (Level)
+            {
+                case LogLevel.Info:
+                    problem = "Info";
+                    break;
+                case LogLevel.Warning:
+                    problem = "Warning";
+                    break;
+                case LogLevel.Error:
+                    problem = "Error";
+                    break;
+                default:
+                    problem = "Unknown";
+                    break;
+            }
+            problem += " Entry";
+            var Header = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] ";
             var Body = Method != null ? $"{Method.DeclaringType?.Name}.{Method.Name} " : "Unknown.Method ";
             var Back = Message;
 
@@ -48,7 +71,7 @@ namespace Kenan.Logging
             Console.Write(Body);
             Console.ForegroundColor = DefaultColor;
             Console.WriteLine(Back);
-            Console.WriteLine("x-x-x");
+            Console.ResetColor();
         }
     }
 }
