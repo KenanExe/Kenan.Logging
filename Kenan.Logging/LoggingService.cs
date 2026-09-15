@@ -22,8 +22,8 @@ namespace Kenan.Logging
 
         private const int SW_RESTORE = 9;
 
-        static ConsoleColor WarnColor = ConsoleColor.Red;
-        static ConsoleColor DefaultColor = ConsoleColor.Gray;
+        static ConsoleColor WarnColor;
+        static ConsoleColor MethodColor;
         public enum LogLevel
         {
             Info,
@@ -50,15 +50,23 @@ namespace Kenan.Logging
             {
                 case LogLevel.Info:
                     problem = "Info";
+                    WarnColor = ConsoleColor.Gray;
+                    MethodColor = ConsoleColor.DarkGray;
                     break;
                 case LogLevel.Warning:
                     problem = "Warning";
+                    WarnColor = ConsoleColor.Yellow;
+                    MethodColor = ConsoleColor.DarkYellow;
                     break;
                 case LogLevel.Error:
                     problem = "Error";
+                    WarnColor = ConsoleColor.Red;
+                    MethodColor = ConsoleColor.DarkRed;
                     break;
                 default:
                     problem = "Unknown";
+                    WarnColor = ConsoleColor.White;
+                    MethodColor = ConsoleColor.Gray;
                     break;
             }
             problem += " Entry";
@@ -66,10 +74,11 @@ namespace Kenan.Logging
             var Body = Method != null ? $"{Method.DeclaringType?.Name}.{Method.Name} " : "Unknown.Method ";
             var Back = Message;
 
-            Console.Write(Header);
             Console.ForegroundColor = WarnColor;
+            Console.Write(Header);
+            Console.ForegroundColor = MethodColor;
             Console.Write(Body);
-            Console.ForegroundColor = DefaultColor;
+            Console.ForegroundColor = WarnColor;
             Console.WriteLine(Back);
             Console.ResetColor();
         }
