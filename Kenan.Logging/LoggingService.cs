@@ -49,33 +49,34 @@ namespace Kenan.Logging
             switch (Level)
             {
                 case LogLevel.Info:
-                    problem = "Info";
+                    problem = "Info ";
                     WarnColor = ConsoleColor.Gray;
                     MethodColor = ConsoleColor.DarkGray;
                     break;
                 case LogLevel.Warning:
-                    problem = "Warning";
+                    problem = "Warning ";
                     WarnColor = ConsoleColor.Yellow;
                     MethodColor = ConsoleColor.DarkYellow;
                     break;
                 case LogLevel.Error:
-                    problem = "Error";
+                    problem = "Error ";
                     WarnColor = ConsoleColor.Red;
                     MethodColor = ConsoleColor.DarkRed;
                     break;
                 default:
-                    problem = "Unknown";
+                    problem = "Unknown ";
                     WarnColor = ConsoleColor.White;
                     MethodColor = ConsoleColor.Gray;
                     break;
             }
-            problem += " Entry";
             var Header = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] ";
             var Body = Method != null ? $"{Method.DeclaringType?.Name}.{Method.Name} " : "Unknown.Method ";
             var Back = Message;
 
-            Console.ForegroundColor = WarnColor;
+            Console.ForegroundColor = MethodColor;
             Console.Write(Header);
+            Console.ForegroundColor = WarnColor;
+            Console.Write(problem);
             Console.ForegroundColor = MethodColor;
             Console.Write(Body);
             Console.ForegroundColor = WarnColor;
