@@ -4,13 +4,11 @@ using System.Runtime.InteropServices;
 
 namespace Kenan.Logging
 {
+    /// <summary>
+    /// Provides console logging with custom coloring and window focusing.
+    /// </summary>
     public class LoggingService
     {
-        /*
-         * First version of log system.
-         * Will be updated in the future with more features and better design.
-         */
-
         [DllImport("kernel32.dll")]
         private static extern IntPtr GetConsoleWindow();
 
@@ -24,12 +22,27 @@ namespace Kenan.Logging
 
         static ConsoleColor WarnColor;
         static ConsoleColor MethodColor;
+
+        /// <summary>
+        /// Specifies the severity level of a log entry.
+        /// </summary>
         public enum LogLevel
         {
+            /// <summary>Information log entry.</summary>
             Info,
+
+            /// <summary>Warning log entry.</summary>
             Warning,
+
+            /// <summary>Error log entry.</summary>
             Error
         }
+
+        /// <summary>
+        /// Logs a formatted message to the console and brings the window to focus.
+        /// </summary>
+        /// <param name="Message">Message to log.</param>
+        /// <param name="Level">Log level (Optional, default: LogLevel.Info).</param>
         public static void Log(string Message, LogLevel Level = LogLevel.Info)
         {
             IntPtr consoleHandle = GetConsoleWindow();
